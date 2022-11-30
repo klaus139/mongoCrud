@@ -62,3 +62,25 @@ export const updateTodo = async (req:Request, res:Response) => {
         })
     }
 }
+
+export const deleteTodo = async (req:Request, res:Response) => {
+    try{
+        const {status} = req.body
+        const todo = await Todo.findOne({status})
+        if(todo) {
+            const todo = await Todo.deleteOne({status})
+            return res.status(200).json({
+                message:"deleted successfully"
+            })
+        }
+        return res.status(400).json({
+            message:"todo not found"
+        })
+        
+    } catch (err) {
+        return res.status(500).json({
+            Error:"internal server error",
+            route:"/todo/deleteTodo"
+        })
+    }
+}
